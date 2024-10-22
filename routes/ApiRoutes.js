@@ -21,4 +21,10 @@ module.exports = function (app) {
     app.route('/api/getAllTask')
         .get(Api.getAllTask);
 
+    app.route('/api/deleteTask/:id')
+        .delete(Api.DeleteTask);
+
+    app.route('/api/updateTask/:id')
+        .put(Api.UpdateTask);
+
 };

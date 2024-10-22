@@ -153,26 +153,67 @@ exports.addTask = async function (req, res) {
         return res.status(201).json(newTask);
     } catch (err) {
         // Log the error for debugging
-        console.error('Error adding task:', err); 
-        
+        console.error('Error adding task:', err);
+
         // Check if error is from mongoose validation
         if (err.name === 'ValidationError') {
             return res.status(400).json({ message: err.message });
         }
-        
+
         return res.status(500).json({ message: 'Internal Server Error' });
     }
 };
 
 exports.getAllTask = async function (req, res) {
     try {
-        const tasks = await Task.find();
-        return res.status(200).json(tasks);
+        const tasks = await Task.find(); // Fetch all tasks from the database
+        return res.status(200).json(tasks); // Send tasks as JSON
     } catch (error) {
         console.error('Error fetching tasks:', error);
         return res.status(500).json({ message: 'Internal Server Error' });
     }
 }
+
+
+exports.DeleteTask = async function (req, res) {
+    const { id } = req.params;
+    try {
+        const result = await Task.findByIdAndDelete(id);
+        if (!result) {
+            return res.status(404).json({ message: 'Task not found' });
+        }
+        res.status(200).json({ message: 'Task deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting task:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+exports.UpdateTask = async (req, res) => {
+    const { id } = req.params;
+    const { taskName, description, dueDate, status } = req.body;
+
+    try {
+        // Find the task by ID and update it
+        const updatedTask = await Task.findByIdAndUpdate(
+            id,
+            { taskName, description, dueDate, status },
+            { new: true, runValidators: true } // Returns the updated document
+        );
+
+        // If the task is not found, return a 404 error
+        if (!updatedTask) {
+            return res.status(404).json({ message: 'Task not found' });
+        }
+
+        // Return the updated task
+        res.status(200).json(updatedTask);
+    } catch (error) {
+        console.error('Error updating task:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
 //testing authorization
 exports.auth = function (req, res) {
     res.status(200).send("Welcome to Api built with NodeJs");
