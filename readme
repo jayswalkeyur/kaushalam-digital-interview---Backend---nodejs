@@ -1,0 +1,25 @@
+i have use ngrok to make the api live for using in frontend 
+
+register api is working 
+
+login is working with authentication with the token 
+
+u can add the task  api is also working
+
+view the task list using dorting get the pending task completed and other this api is also working 
+
+beacuse of some issue i have not completed the other api 
+
+make the .env file implement this
+
+MONGO_URI=
+PORT=
+TOKEN_KEY=
+
+npm start 
+
+u can also check this api in the post man
+
+use that barrer token
+
+this type of project is so much scalabel and multiple developer can work also.
